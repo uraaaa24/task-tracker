@@ -10,7 +10,7 @@ export default async function Home() {
       Home
       <div className="bg-white shadow-md rounded-md p-4 mt-4 space-y-4">
         {notes?.map((note) => (
-          <ListItem key={note.id} title={note.title} />
+          <ListItem key={note.id} note={note} />
         ))}
       </div>
     </div>
