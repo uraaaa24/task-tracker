@@ -1,8 +1,8 @@
 import { Button } from '@/components/ui/button'
-import { FormField } from '@/components/ui/form'
+import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { CirclePlus } from 'lucide-react'
-import { useForm } from 'react-hook-form'
+import { Form, useForm } from 'react-hook-form'
 
 const TodoInput = () => {
   // TODO: zodResolverを使ってバリデーションを追加する
@@ -18,17 +18,23 @@ const TodoInput = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex space-x-2 items-center">
+    <Form {...methods} className="flex space-x-2 items-center">
       <FormField
-        name="title"
         control={control}
-        render={({ field }) => <Input {...field} type="text" placeholder="Add a new todo" />}
+        name="title"
+        render={({ field }) => (
+          <FormItem>
+            <FormControl>
+              <Input placeholder="Add a new todo" {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
       />
-
-      <Button variant="ghost" size="icon">
+      <Button variant="ghost" size="icon" onClick={handleSubmit(onSubmit)}>
         <CirclePlus />
       </Button>
-    </form>
+    </Form>
   )
 }
 
