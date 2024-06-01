@@ -1,6 +1,6 @@
-import { Checkbox } from '../ui/checkbox'
+import { Checkbox } from '@/components/ui/checkbox'
 
-type Note = {
+export type Note = {
   id: string
   title: string
 }
