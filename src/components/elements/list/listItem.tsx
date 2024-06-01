@@ -19,10 +19,7 @@ const ListItem = forwardRef<HTMLDivElement, ListItemProps>((props, ref) => {
   return (
     <div className="flex items-center space-x-2" ref={ref}>
       <Checkbox id={id} checked={props.value} onCheckedChange={props.onChange} />
-      <label
-        htmlFor={id}
-        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-      >
+      <label htmlFor={id} className={`flex-1 ${props.value ? 'line-through text-gray-500' : ''} `}>
         {title}
       </label>
     </div>

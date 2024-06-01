@@ -6,7 +6,7 @@ export default async function Home() {
   const { data: notes } = await supabase.from('notes').select()
 
   return (
-    <div>
+    <div className="p-8">
       Home
       <div className="bg-white shadow-md rounded-md p-4 mt-4 space-y-4">
         <TodoForm notes={notes ?? []} />
