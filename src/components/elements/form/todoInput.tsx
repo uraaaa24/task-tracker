@@ -25,22 +25,24 @@ const TodoInputForm = () => {
 
   return (
     <Form {...methods}>
-      <form onSubmit={handleSubmit(onSubmit)} className="flex space-x-2 items-center">
+      <form onSubmit={handleSubmit(onSubmit)}>
         <FormField
           control={control}
           name="title"
           render={({ field }) => (
             <FormItem>
-              <FormControl>
-                <Input placeholder="Add a new todo" {...field} />
-              </FormControl>
+              <div className="flex space-x-2 items-center w-96">
+                <FormControl>
+                  <Input placeholder="Add a new todo" {...field} />
+                </FormControl>
+                <Button variant="ghost" size="icon" type="submit">
+                  <CirclePlus />
+                </Button>
+              </div>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button variant="ghost" size="icon" type="submit">
-          <CirclePlus />
-        </Button>
       </form>
     </Form>
   )
