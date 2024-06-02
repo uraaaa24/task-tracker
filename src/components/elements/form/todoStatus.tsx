@@ -1,33 +1,34 @@
 'use client'
 
+import { Button } from '@/components/ui/button'
 import { Form, FormField, FormItem } from '@/components/ui/form'
-import { TodoFormInferType, todoFormSchema } from '@/schemas/todoListForm/validation'
+import { TodoFormNames } from '@/schemas/todoStatusForm'
+import { TodoFormInferType, todoFormSchema } from '@/schemas/todoStatusForm/validation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import ListItem, { Note } from '../list/listItem'
-import TodoInput from './todoInput'
 
 type TodoFormProps = {
   notes: Note[]
 }
 
-const TodoForm = (props: TodoFormProps) => {
+const TodoStatusForm = (props: TodoFormProps) => {
   const methods = useForm<TodoFormInferType>({
     resolver: zodResolver(todoFormSchema),
     defaultValues: {
-      notes: props.notes?.reduce((acc, note) => ({ ...acc, [note.id]: false }), {})
+      [TodoFormNames.notes]: props.notes?.reduce((acc, note) => ({ ...acc, [note.id]: false }), {})
     }
   })
   const { control, handleSubmit } = methods
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: TodoFormInferType) => {
     console.log(data)
     // TODO: todoを更新する処理を追加する
   }
 
   return (
     <Form {...methods}>
-      <div className="w-96 space-y-2">
+      <form onSubmit={handleSubmit(onSubmit)} className="w-96 space-y-2">
         {props.notes?.map((note) => (
           <FormField
             key={note.id}
@@ -40,14 +41,11 @@ const TodoForm = (props: TodoFormProps) => {
             )}
           />
         ))}
-        <TodoInput />
-      </div>
-      {/* ボタンで更新するのではなくチェックボックスの値が変わった段階で、フォームを送信する方針にしたため、一旦コメントアウト */}
-      {/* <Button type="submit" onClick={handleSubmit(onSubmit)}>
-        Save
-      </Button> */}
+        {/* TODO: checkboxの状態を変えた時点で、DBを更新するようにする */}
+        <Button type="submit">Save</Button>
+      </form>
     </Form>
   )
 }
 
-export default TodoForm
+export default TodoStatusForm
