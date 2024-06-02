@@ -5,6 +5,7 @@ import { forwardRef } from 'react'
 export type Note = {
   id: string
   title: string
+  completed: boolean
 }
 
 type ListItemProps = {

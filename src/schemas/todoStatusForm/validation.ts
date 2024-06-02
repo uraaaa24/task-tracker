@@ -1,7 +1,8 @@
 import * as z from 'zod'
 
 export const todoFormSchema = z.object({
-  notes: z.record(z.boolean())
+  id: z.string(),
+  completed: z.boolean()
 })
 
 export type TodoFormInferType = z.infer<typeof todoFormSchema>

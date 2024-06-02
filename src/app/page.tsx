@@ -10,7 +10,7 @@ export default async function Home() {
     <div className="p-8">
       Home
       <div className="bg-white shadow-md rounded-md p-4 mt-4 space-y-4">
-        <TodoStatusForm notes={notes ?? []} />
+        {notes && notes.map((note) => <TodoStatusForm key={note.id} note={note} />)}
         <TodoInputForm />
       </div>
     </div>

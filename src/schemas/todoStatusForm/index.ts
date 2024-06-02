@@ -1,7 +1,9 @@
 export const TodoFormNames = {
-  notes: 'notes'
+  id: 'id',
+  completed: 'completed'
 } as const
 
 export type TodoFormSchema = {
-  notes: Record<string, boolean>
+  id: string
+  completed: boolean
 }
