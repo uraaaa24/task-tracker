@@ -3,14 +3,17 @@
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { API_URL_TODOS } from '@/constants/api'
 import { TodoInputNames } from '@/schemas/todoInputForm'
 import { TodoInputInferType, todoInputSchema } from '@/schemas/todoInputForm/validation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { CirclePlus } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 
 const TodoInputForm = () => {
-  // TODO: zodResolverを使ってバリデーションを追加する
+  const router = useRouter()
+
   const methods = useForm<TodoInputInferType>({
     resolver: zodResolver(todoInputSchema),
     defaultValues: {
@@ -19,8 +22,16 @@ const TodoInputForm = () => {
   })
   const { control, handleSubmit } = methods
 
-  const onSubmit = (data: TodoInputInferType) => {
-    console.log(data)
+  const onSubmit = async (data: TodoInputInferType) => {
+    const result = await fetch(API_URL_TODOS, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+
+    if (result.ok) router.refresh()
   }
 
   return (
