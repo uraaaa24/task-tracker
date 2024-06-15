@@ -7,10 +7,10 @@ import { TodoFormInferType, todoFormSchema } from '@/schemas/todoStatusForm/vali
 import { putTodoCompleteStatus } from '@/utils/requester/put/todo'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import ListItem, { Note } from '../list/listItem'
+import ListItem, { Todo } from '../list/listItem'
 
 type TodoFormProps = {
-  note: Note
+  todo: Todo
 }
 
 const TodoStatusForm = (props: TodoFormProps) => {
@@ -19,8 +19,8 @@ const TodoStatusForm = (props: TodoFormProps) => {
   const form = useForm<TodoFormInferType>({
     resolver: zodResolver(todoFormSchema),
     defaultValues: {
-      [TodoFormNames.id]: props.note.id,
-      [TodoFormNames.completed]: props.note.completed || false
+      [TodoFormNames.id]: props.todo.id,
+      [TodoFormNames.completed]: props.todo.completed || false
     }
   })
 
@@ -48,11 +48,11 @@ const TodoStatusForm = (props: TodoFormProps) => {
             <FormItem>
               <FormControl>
                 <ListItem
-                  note={props.note}
+                  todo={props.todo}
                   value={field.value}
                   onChange={async (value: boolean) => {
                     field.onChange(value)
-                    await handleCheckboxChange(props.note.id, props.note.title, value)
+                    await handleCheckboxChange(props.todo.id, props.todo.title, value)
                   }}
                 />
               </FormControl>

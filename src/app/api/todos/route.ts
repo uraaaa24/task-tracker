@@ -9,8 +9,8 @@ export const GET = async () => {
   const supabase = createClient()
 
   try {
-    const { data: notes } = await supabase.from('todos').select()
-    return NextResponse.json(notes)
+    const { data } = await supabase.from('todos').select()
+    return NextResponse.json(data)
   } catch (error) {
     console.error('Error fetching notes:', error)
     return NextResponse.error()

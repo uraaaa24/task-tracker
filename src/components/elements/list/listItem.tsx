@@ -4,20 +4,20 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Pencil, Trash } from 'lucide-react'
 import { forwardRef } from 'react'
 
-export type Note = {
+export type Todo = {
   id: string
   title: string
   completed: boolean
 }
 
 type ListItemProps = {
-  note: Note
+  todo: Todo
   value: boolean
   onChange: (value: boolean) => void
 }
 
 const ListItem = forwardRef<HTMLDivElement, ListItemProps>((props, ref) => {
-  const { id, title } = props.note
+  const { id, title } = props.todo
 
   return (
     <div className="flex items-center space-x-2" ref={ref}>
