@@ -7,6 +7,7 @@ import { TodoFormInferType, todoFormSchema } from '@/schemas/todoStatusForm/vali
 import { putTodoCompleteStatus } from '@/utils/requester/put/todo'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Pencil, Trash } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 
 export type Todo = {
@@ -20,6 +21,8 @@ type TodoListItemProps = {
 }
 
 const TodoListItem = (props: TodoListItemProps) => {
+  const router = useRouter()
+
   const { toast } = useToast()
 
   const form = useForm<TodoFormInferType>({
@@ -41,6 +44,8 @@ const TodoListItem = (props: TodoListItemProps) => {
       toast({
         title: `${title} is ${statusMessage}`
       })
+
+      router.refresh()
     }
   }
 
