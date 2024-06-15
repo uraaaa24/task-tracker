@@ -9,9 +9,8 @@ export default async function Home() {
   const notes = await result.json()
 
   return (
-    <div className="p-8">
-      Home
-      <div className="bg-white shadow-lg rounded-md p-4 mt-4 space-y-2 ">
+    <div className="p-8 flex flex-col items-center justify-center">
+      <div className="bg-white shadow-lg max-w-lg rounded-md p-8 mt-4 space-y-2 ">
         {notes && notes.map((note: any) => <TodoStatusForm key={note.id} note={note} />)}
         <TodoInputForm />
       </div>
