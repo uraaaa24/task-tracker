@@ -1,5 +1,6 @@
 'use client'
 
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import { Separator } from '@/components/ui/separator'
 import TodoListItem, { Todo } from './list/todoListItem'
 
@@ -22,10 +23,18 @@ const TodoStatusForm = (props: TodoFormProps) => {
       )}
       {completedTodos && completedTodos.length > 0 && (
         <div>
-          <Separator />
-          {completedTodos.map((todo: Todo) => (
-            <TodoListItem key={todo.id} todo={todo} />
-          ))}
+          <Accordion type="single" collapsible>
+            <AccordionItem value="item-1" className="border-none">
+              <AccordionTrigger>
+                <Separator className="w-full" />
+              </AccordionTrigger>
+              <AccordionContent>
+                {completedTodos.map((todo: Todo) => (
+                  <TodoListItem key={todo.id} todo={todo} />
+                ))}
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </div>
       )}
     </>

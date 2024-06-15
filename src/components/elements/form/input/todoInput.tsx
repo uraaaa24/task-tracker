@@ -42,7 +42,7 @@ const TodoInputForm = () => {
           name="title"
           render={({ field }) => (
             <FormItem>
-              <div className="flex space-x-2 items-center w-96">
+              <div className="flex space-x-2 items-center justify-between">
                 <FormControl>
                   <Input placeholder="Add a new todo" {...field} />
                 </FormControl>
