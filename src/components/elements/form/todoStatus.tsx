@@ -1,6 +1,7 @@
 'use client'
 
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
+import { API_URL_TODOS } from '@/constants/api'
 import { TodoFormNames } from '@/schemas/todoStatusForm'
 import { TodoFormInferType, todoFormSchema } from '@/schemas/todoStatusForm/validation'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -23,16 +24,13 @@ const TodoStatusForm = (props: TodoFormProps) => {
   const { control } = form
 
   const handleCheckboxChange = async (id: string, value: boolean) => {
-    // PUTリクエストのロジックを追加
-    console.log(`Updating note ${id} to ${value}`)
-    // Example:
-    // await fetch(`/api/todos/${id}`, {
-    //   method: 'PUT',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify({ completed: value })
-    // })
+    const response = await fetch(API_URL_TODOS, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ id, completed: value })
+    })
   }
 
   return (

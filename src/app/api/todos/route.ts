@@ -2,6 +2,9 @@ import { createClient } from '@/utils/supabase/server'
 import { NextResponse } from 'next/server'
 import { v4 as uuid } from 'uuid'
 
+/**
+ * Get all todos
+ */
 export const GET = async () => {
   const supabase = createClient()
 
@@ -14,6 +17,10 @@ export const GET = async () => {
   }
 }
 
+/**
+ * Create a new todo
+ * @param request  - Request( title: string )
+ */
 export const POST = async (request: Request) => {
   const supabase = createClient()
 
@@ -34,6 +41,28 @@ export const POST = async (request: Request) => {
     return NextResponse.json(data)
   } catch (error) {
     console.error('Error creating note:', error)
+    return NextResponse.error()
+  }
+}
+
+/**
+ * Update a todo
+ * @param request  - Request( id: string, completed: boolean )
+ */
+export const PUT = async (request: Request) => {
+  const supabase = createClient()
+
+  try {
+    const json = await request.json()
+    const { id, completed } = json
+    if (!id || completed === undefined) return NextResponse.error()
+
+    const { data, error } = await supabase.from('todos').update({ completed }).eq('id', id)
+    if (error) throw new Error(error.message)
+
+    return NextResponse.json(data)
+  } catch (error) {
+    console.error('Error updating note:', error)
     return NextResponse.error()
   }
 }
