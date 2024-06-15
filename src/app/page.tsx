@@ -1,12 +1,9 @@
 import TodoInputForm from '@/components/elements/form/input/todoInput'
 import TodoStatusForm from '@/components/elements/form/todoStatus'
-import { API_URL_TODOS } from '@/constants/api'
+import { getAllTodos } from '@/utils/requester/get/todos'
 
 export default async function Home() {
-  const result = await fetch(API_URL_TODOS, {
-    cache: 'no-store'
-  })
-  const todos = await result.json()
+  const todos = await getAllTodos()
 
   return (
     <div className="p-8 flex flex-col items-center justify-center">

@@ -3,9 +3,9 @@
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { API_URL_TODOS } from '@/constants/api'
 import { TodoInputNames } from '@/schemas/todoInputForm'
 import { TodoInputInferType, todoInputSchema } from '@/schemas/todoInputForm/validation'
+import { postTodo } from '@/utils/requester/post/todo'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { CirclePlus } from 'lucide-react'
 import { useRouter } from 'next/navigation'
@@ -23,13 +23,7 @@ const TodoInputForm = () => {
   const { control, handleSubmit } = methods
 
   const onSubmit = async (data: TodoInputInferType) => {
-    const result = await fetch(API_URL_TODOS, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })
+    const result = await postTodo(data)
 
     if (result.ok) router.refresh()
   }
