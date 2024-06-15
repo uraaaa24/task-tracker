@@ -38,15 +38,16 @@ const TodoListItem = (props: TodoListItemProps) => {
   /** Change the status of the todo */
   const handleCheckboxChange = async (id: string, title: string, completed: boolean) => {
     const response = await putTodoCompleteStatus(id, completed)
-    const statusMessage = completed ? 'completed' : 'incompleted'
 
-    if (response.ok) {
+    if (!response.ok) return
+
+    if (completed) {
       toast({
-        title: `${title} is ${statusMessage}`
+        title: `${title} is completed`
       })
-
-      router.refresh()
     }
+
+    router.refresh()
   }
 
   return (
