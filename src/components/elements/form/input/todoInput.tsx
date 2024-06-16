@@ -20,12 +20,15 @@ const TodoInputForm = () => {
       [TodoInputNames.title]: ''
     }
   })
-  const { control, handleSubmit } = methods
+  const { control, handleSubmit, reset } = methods
 
   const onSubmit = async (data: TodoInputInferType) => {
     const result = await postTodo(data)
 
-    if (result.ok) router.refresh()
+    if (result.ok) {
+      router.refresh()
+      reset()
+    }
   }
 
   return (
