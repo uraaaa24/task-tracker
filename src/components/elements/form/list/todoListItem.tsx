@@ -4,12 +4,12 @@ import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { useToast } from '@/components/ui/use-toast'
 import { TodoFormNames } from '@/schemas/todoStatusForm'
 import { TodoFormInferType, todoFormSchema } from '@/schemas/todoStatusForm/validation'
-import { Todo } from '@/types/todo'
-import { putTodoCompleteStatus } from '@/utils/requester/put/todo'
+import { PutTodoStatusRequest, PutTodoTitleRequest, Todo } from '@/types/todo'
+import { updateTodoCompleteStatus, updateTodoTitle } from '@/utils/requester/put/todo'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Pencil, Trash } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 type TodoListItemProps = {
@@ -20,7 +20,8 @@ const TodoListItem = (props: TodoListItemProps) => {
   const router = useRouter()
   const formRef = useRef<HTMLFormElement>(null)
 
-  const [editing, setEditing] = useState(false)
+  const [isEditing, setIsEditing] = useState(false)
+  const [editingTitle, setEditingTitle] = useState(props.todo.title)
 
   const { toast } = useToast()
 
@@ -36,7 +37,12 @@ const TodoListItem = (props: TodoListItemProps) => {
 
   /** Change the status of the todo */
   const handleCheckboxChange = async (id: string, title: string, completed: boolean) => {
-    const response = await putTodoCompleteStatus(id, completed)
+    const requestBody: PutTodoStatusRequest = {
+      id,
+      completed
+    }
+
+    const response = await updateTodoCompleteStatus(requestBody)
 
     if (!response.ok) return
     if (completed) {
@@ -51,14 +57,28 @@ const TodoListItem = (props: TodoListItemProps) => {
   /** Edit the todo */
   const handleEdit = (event: React.MouseEvent) => {
     event.preventDefault()
-    setEditing(!editing)
+    setIsEditing(!isEditing)
   }
+
+  /** Update the title of the todo */
+  const handleUpdateTitle = useCallback(async () => {
+    if (editingTitle !== props.todo.title) {
+      const requestBody: PutTodoTitleRequest = {
+        id: props.todo.id,
+        title: editingTitle
+      }
+      const _ = await updateTodoTitle(requestBody)
+
+      router.refresh()
+    }
+  }, [editingTitle, props.todo.id, props.todo.title, router])
 
   useEffect(() => {
     /* Close the form when clicking outside */
     const handleClickOutside = (event: MouseEvent) => {
       if (formRef.current && !formRef.current.contains(event.target as Node)) {
-        setEditing(false)
+        handleUpdateTitle()
+        setIsEditing(false)
       }
     }
 
@@ -66,7 +86,7 @@ const TodoListItem = (props: TodoListItemProps) => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
-  }, [])
+  }, [handleUpdateTitle])
 
   return (
     <Form {...form}>
@@ -86,12 +106,12 @@ const TodoListItem = (props: TodoListItemProps) => {
                       await handleCheckboxChange(props.todo.id, props.todo.title, value)
                     }}
                   />
-                  {editing ? (
+                  {isEditing ? (
                     <input
                       type="text"
                       className="px-2 py-1 border rounded-md border-gray-500 focus:outline-none focus:ring-2 "
                       defaultValue={props.todo.title}
-                      onChange={(e) => console.log(e.target.value)}
+                      onChange={(e) => setEditingTitle(e.target.value)}
                     />
                   ) : (
                     <label htmlFor={props.todo.id} className={`${field.value ? 'line-through text-gray-500' : ''} `}>

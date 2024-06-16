@@ -47,22 +47,26 @@ export const POST = async (request: Request) => {
 
 /**
  * Update a todo
- * @param request  - Request( id: string, completed: boolean )
+ * @param request - Request( id: string, title?: string, completed?: boolean )
  */
 export const PUT = async (request: Request) => {
   const supabase = createClient()
 
   try {
     const json = await request.json()
-    const { id, completed } = json
-    if (!id || completed === undefined) return NextResponse.error()
+    const { id, title, completed } = json
+    if (!id || (title === undefined && completed === undefined)) return NextResponse.error()
 
-    const { data, error } = await supabase.from('todos').update({ completed }).eq('id', id)
+    const updateData: { title?: string; completed?: boolean } = {}
+    if (title !== undefined) updateData.title = title
+    if (completed !== undefined) updateData.completed = completed
+
+    const { data, error } = await supabase.from('todos').update(updateData).eq('id', id)
     if (error) throw new Error(error.message)
 
     return NextResponse.json(data)
   } catch (error) {
-    console.error('Error updating note:', error)
+    console.error('Error updating todo:', error)
     return NextResponse.error()
   }
 }

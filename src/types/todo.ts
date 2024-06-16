@@ -9,3 +9,13 @@ export type GetAllTodosSuccessResponse = {
   status: number
   result: Todo[]
 }
+
+export type PutTodoStatusRequest = {
+  id: string
+  completed: boolean
+}
+
+export type PutTodoTitleRequest = {
+  id: string
+  title: string
+}
