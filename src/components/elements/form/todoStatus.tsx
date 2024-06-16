@@ -10,8 +10,12 @@ type TodoFormProps = {
 }
 
 const TodoStatusForm = (props: TodoFormProps) => {
-  const completedTodos = props.todos.filter((todo) => todo.completed)
-  const incompletedTodos = props.todos.filter((todo) => !todo.completed)
+  const incompletedTodos = props.todos
+    .filter((todo) => !todo.completed)
+    .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+  const completedTodos = props.todos
+    .filter((todo) => todo.completed)
+    .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
 
   return (
     <>
