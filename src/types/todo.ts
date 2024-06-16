@@ -5,7 +5,7 @@ export type Todo = {
   created_at: string
 }
 
-export type TodoSuccessResponse = {
+export type GetAllTodosSuccessResponse = {
   status: number
   result: Todo[]
 }
