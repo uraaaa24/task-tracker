@@ -70,3 +70,26 @@ export const PUT = async (request: Request) => {
     return NextResponse.error()
   }
 }
+
+/**
+ * Delete a todo
+ * @param request - Request( id: string )
+ * @returns
+ */
+export const DELETE = async (request: Request) => {
+  const supabase = createClient()
+
+  try {
+    const json = await request.json()
+    const { id } = json
+    if (!id) return NextResponse.error()
+
+    const { data, error } = await supabase.from('todos').delete().eq('id', id)
+    if (error) throw new Error(error.message)
+
+    return NextResponse.json(data)
+  } catch (error) {
+    console.error('Error deleting todo:', error)
+    return NextResponse.error()
+  }
+}

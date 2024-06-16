@@ -5,6 +5,7 @@ import { useToast } from '@/components/ui/use-toast'
 import { TodoFormNames } from '@/schemas/todoStatusForm'
 import { TodoFormInferType, todoFormSchema } from '@/schemas/todoStatusForm/validation'
 import { PutTodoStatusRequest, PutTodoTitleRequest, Todo } from '@/types/todo'
+import { deleteTodo } from '@/utils/requester/delete/todo'
 import { updateTodoCompleteStatus, updateTodoTitle } from '@/utils/requester/put/todo'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Pencil, Trash } from 'lucide-react'
@@ -57,6 +58,7 @@ const TodoListItem = (props: TodoListItemProps) => {
   /** Edit the todo */
   const handleEdit = (event: React.MouseEvent) => {
     event.preventDefault()
+
     setIsEditing(!isEditing)
   }
 
@@ -72,6 +74,19 @@ const TodoListItem = (props: TodoListItemProps) => {
       router.refresh()
     }
   }, [editingTitle, props.todo.id, props.todo.title, router])
+
+  /** Delete the todo */
+  const handleDelete = async (event: React.MouseEvent) => {
+    event.preventDefault()
+
+    const response = await deleteTodo(props.todo.id)
+    if (!response.ok) return
+    toast({
+      title: `${props.todo.title} is deleted`
+    })
+
+    router.refresh()
+  }
 
   useEffect(() => {
     /* Close the form when clicking outside */
@@ -124,8 +139,7 @@ const TodoListItem = (props: TodoListItemProps) => {
                       <Pencil color="#6EE7B7" size={16} />
                     </Button>
 
-                    {/* 削除ボタン */}
-                    <Button variant="ghost" onClick={() => console.log('Delete button clicked')} className="px-2">
+                    <Button variant="ghost" onClick={handleDelete} className="px-2">
                       <Trash color="#F87171" size={16} />
                     </Button>
                   </div>
