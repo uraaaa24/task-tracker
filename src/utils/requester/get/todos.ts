@@ -10,5 +10,8 @@ export const getAllTodos = async () => {
 
   const data = await response.json()
 
-  return data
+  return {
+    status: 200,
+    result: data
+  }
 }

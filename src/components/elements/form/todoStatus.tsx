@@ -2,7 +2,8 @@
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import { Separator } from '@/components/ui/separator'
-import TodoListItem, { Todo } from './list/todoListItem'
+import { Todo } from '@/types/todo'
+import TodoListItem from './list/todoListItem'
 
 type TodoFormProps = {
   todos: Todo[]

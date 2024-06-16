@@ -4,17 +4,12 @@ import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { useToast } from '@/components/ui/use-toast'
 import { TodoFormNames } from '@/schemas/todoStatusForm'
 import { TodoFormInferType, todoFormSchema } from '@/schemas/todoStatusForm/validation'
+import { Todo } from '@/types/todo'
 import { putTodoCompleteStatus } from '@/utils/requester/put/todo'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Pencil, Trash } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
-
-export type Todo = {
-  id: string
-  title: string
-  completed: boolean
-}
 
 type TodoListItemProps = {
   todo: Todo
