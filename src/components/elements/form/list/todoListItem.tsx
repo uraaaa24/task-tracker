@@ -9,6 +9,7 @@ import { putTodoCompleteStatus } from '@/utils/requester/put/todo'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Pencil, Trash } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 type TodoListItemProps = {
@@ -17,6 +18,9 @@ type TodoListItemProps = {
 
 const TodoListItem = (props: TodoListItemProps) => {
   const router = useRouter()
+  const formRef = useRef<HTMLFormElement>(null)
+
+  const [editing, setEditing] = useState(false)
 
   const { toast } = useToast()
 
@@ -35,7 +39,6 @@ const TodoListItem = (props: TodoListItemProps) => {
     const response = await putTodoCompleteStatus(id, completed)
 
     if (!response.ok) return
-
     if (completed) {
       toast({
         title: `${title} is completed`
@@ -45,9 +48,29 @@ const TodoListItem = (props: TodoListItemProps) => {
     router.refresh()
   }
 
+  /** Edit the todo */
+  const handleEdit = (event: React.MouseEvent) => {
+    event.preventDefault()
+    setEditing(!editing)
+  }
+
+  useEffect(() => {
+    /* Close the form when clicking outside */
+    const handleClickOutside = (event: MouseEvent) => {
+      if (formRef.current && !formRef.current.contains(event.target as Node)) {
+        setEditing(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
+
   return (
     <Form {...form}>
-      <form className="space-y-2">
+      <form ref={formRef} className="space-y-2">
         <FormField
           name={TodoFormNames.completed}
           control={control}
@@ -63,13 +86,21 @@ const TodoListItem = (props: TodoListItemProps) => {
                       await handleCheckboxChange(props.todo.id, props.todo.title, value)
                     }}
                   />
-                  <label htmlFor={props.todo.id} className={`${field.value ? 'line-through text-gray-500' : ''} `}>
-                    {props.todo.title}
-                  </label>
+                  {editing ? (
+                    <input
+                      type="text"
+                      className="px-2 py-1 border rounded-md border-gray-500 focus:outline-none focus:ring-2 "
+                      defaultValue={props.todo.title}
+                      onChange={(e) => console.log(e.target.value)}
+                    />
+                  ) : (
+                    <label htmlFor={props.todo.id} className={`${field.value ? 'line-through text-gray-500' : ''} `}>
+                      {props.todo.title}
+                    </label>
+                  )}
 
                   <div className="space-x-1">
-                    {/* 編集ボタン */}
-                    <Button variant="ghost" onClick={() => console.log('Edit button clicked')} className="px-2">
+                    <Button variant="ghost" onClick={handleEdit} className="px-2">
                       <Pencil color="#6EE7B7" size={16} />
                     </Button>
 
