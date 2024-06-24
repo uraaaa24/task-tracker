@@ -2,13 +2,14 @@ import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { useToast } from '@/components/ui/use-toast'
+import { useUpdateTodoComplete } from '@/hooks/useUpdateTodoComplete'
 import { TodoFormNames } from '@/schemas/todoStatusForm'
 import { TodoFormInferType, todoFormSchema } from '@/schemas/todoStatusForm/validation'
 import { PutTodoStatusRequest, PutTodoTitleRequest, Todo } from '@/types/todo'
 import { deleteTodo } from '@/utils/requester/delete/todo'
-import { updateTodoCompleteStatus, updateTodoTitle } from '@/utils/requester/put/todo'
+import { updateTodoTitle } from '@/utils/requester/put/todo'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Pencil, Trash } from 'lucide-react'
+import { Loader2, Pencil, Trash } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -23,6 +24,8 @@ const TodoListItem = (props: TodoListItemProps) => {
 
   const [isEditing, setIsEditing] = useState(false)
   const [editingTitle, setEditingTitle] = useState(props.todo.title)
+
+  const { updateTodoComplete, isLoading, hasError, errorMessage } = useUpdateTodoComplete()
 
   const { toast } = useToast()
 
@@ -43,9 +46,14 @@ const TodoListItem = (props: TodoListItemProps) => {
       completed
     }
 
-    const response = await updateTodoCompleteStatus(requestBody)
+    const _ = await updateTodoComplete(requestBody)
 
-    if (!response.ok) return
+    if (hasError) {
+      toast({
+        title: errorMessage
+      })
+    }
+
     if (completed) {
       toast({
         title: `${title} is completed`
@@ -136,14 +144,22 @@ const TodoListItem = (props: TodoListItemProps) => {
                     )}
                   </div>
 
-                  <div className="flex space-x-1">
-                    <Button variant="ghost" onClick={handleEdit} className="px-2">
-                      <Pencil color="#6EE7B7" size={16} />
-                    </Button>
+                  <div className="flex space-x-1 justify-center">
+                    {isLoading ? (
+                      <div className="flex items-center justify-center w-full">
+                        <Loader2 className="animate-spin text-gray-500" size={16} aria-label="Loading" />
+                      </div>
+                    ) : (
+                      <>
+                        <Button variant="ghost" onClick={handleEdit} className="px-2">
+                          <Pencil color="#6EE7B7" size={16} />
+                        </Button>
 
-                    <Button variant="ghost" onClick={handleDelete} className="px-2">
-                      <Trash color="#F87171" size={16} />
-                    </Button>
+                        <Button variant="ghost" onClick={handleDelete} className="px-2">
+                          <Trash color="#F87171" size={16} />
+                        </Button>
+                      </>
+                    )}
                   </div>
                 </div>
               </FormControl>
