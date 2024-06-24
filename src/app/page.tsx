@@ -8,8 +8,8 @@ export default async function Home() {
   return (
     <div className="p-8 flex flex-col items-center justify-center">
       <div className="bg-white shadow-lg rounded-md p-8 mt-4 space-y-2 max-w-lg w-full mx-auto">
-        {todos && <TodoStatusForm todos={todos.result} />}
         <TodoInputForm />
+        {todos && <TodoStatusForm todos={todos.result} />}
       </div>
     </div>
   )

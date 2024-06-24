@@ -112,29 +112,31 @@ const TodoListItem = (props: TodoListItemProps) => {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id={props.todo.id}
-                    checked={field.value}
-                    onCheckedChange={async (value: boolean) => {
-                      field.onChange(value)
-                      await handleCheckboxChange(props.todo.id, props.todo.title, value)
-                    }}
-                  />
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      className="px-2 py-1 border rounded-md border-gray-500 focus:outline-none focus:ring-2 "
-                      defaultValue={props.todo.title}
-                      onChange={(e) => setEditingTitle(e.target.value)}
+                <div className="flex items-center justify-between gap-1">
+                  <div className="flex items-center space-x-2 w-full">
+                    <Checkbox
+                      id={props.todo.id}
+                      checked={field.value}
+                      onCheckedChange={async (value: boolean) => {
+                        field.onChange(value)
+                        await handleCheckboxChange(props.todo.id, props.todo.title, value)
+                      }}
                     />
-                  ) : (
-                    <label htmlFor={props.todo.id} className={`${field.value ? 'line-through text-gray-500' : ''} `}>
-                      {props.todo.title}
-                    </label>
-                  )}
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        className="pl-1 py-1 border rounded-md w-full border-gray-500 focus:outline-none focus:ring-2"
+                        defaultValue={props.todo.title}
+                        onChange={(e) => setEditingTitle(e.target.value)}
+                      />
+                    ) : (
+                      <label htmlFor={props.todo.id} className={`pl-1 ${field.value ? 'line-through text-gray-500' : ''} `}>
+                        {props.todo.title}
+                      </label>
+                    )}
+                  </div>
 
-                  <div className="space-x-1">
+                  <div className="flex space-x-1">
                     <Button variant="ghost" onClick={handleEdit} className="px-2">
                       <Pencil color="#6EE7B7" size={16} />
                     </Button>
