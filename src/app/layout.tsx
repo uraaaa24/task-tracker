@@ -3,7 +3,7 @@ import { Inter as FontSans } from 'next/font/google'
 import './globals.css'
 
 import Header from '@/components/layouts/header'
-import { Toaster } from '@/components/ui/toaster'
+import Sidebar from '@/components/layouts/sidebar'
 import { cn } from '@/lib/utils'
 
 const fontSans = FontSans({
@@ -24,11 +24,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={cn('min-h-screen bg-background font-sans antialiased', fontSans.variable)}>
-        <main>
+        <div className="flex flex-col h-screen">
           <Header />
-          {children}
-          <Toaster />
-        </main>
+          <div className="flex fixed pt-16 w-full">
+            <Sidebar />
+            <main className="flex-1">{children}</main>
+          </div>
+        </div>
       </body>
     </html>
   )

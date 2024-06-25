@@ -120,8 +120,8 @@ const TodoListItem = (props: TodoListItemProps) => {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <div className="flex items-center justify-between gap-1">
-                  <div className="flex items-center space-x-2 w-full">
+                <div className="flex items-center justify-between gap-1 hover:bg-gray-50">
+                  <div className="flex items-center space-x-2 w-full pl-1">
                     <Checkbox
                       id={props.todo.id}
                       checked={field.value}

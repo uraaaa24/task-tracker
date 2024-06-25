@@ -31,6 +31,7 @@ const TodoStatusForm = (props: TodoFormProps) => {
           <Accordion type="single" collapsible>
             <AccordionItem value="item-1" className="border-none">
               <AccordionTrigger>
+                <p className="text-gray-500 text-sm">Completed</p>
                 <Separator className="w-full" />
               </AccordionTrigger>
               <AccordionContent>
