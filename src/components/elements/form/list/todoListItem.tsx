@@ -23,7 +23,7 @@ const TodoListItem = (props: TodoListItemProps) => {
   const router = useRouter()
   const formRef = useRef<HTMLFormElement>(null)
 
-  const {selectedTodo,setTodo}  = useTodoDetail()
+  const { selectedTodo, setTodo } = useTodoDetail()
 
   const [isEditing, setIsEditing] = useState(false)
   const [editingTitle, setEditingTitle] = useState(props.todo.title)
@@ -105,8 +105,6 @@ const TodoListItem = (props: TodoListItemProps) => {
     setTodo(props.todo)
   }
 
-  console.log(selectedTodo)
-
   useEffect(() => {
     /* Close the form when clicking outside */
     const handleClickOutside = (event: MouseEvent) => {
@@ -162,12 +160,12 @@ const TodoListItem = (props: TodoListItemProps) => {
                       </div>
                     ) : (
                       <>
-                        <Button variant="ghost" onClick={handleDetail} className="px-2">
-                          <BookOpenText color="#60A5FA" size={16} />
-                        </Button>
-
                         <Button variant="ghost" onClick={handleEdit} className="px-2">
                           <Pencil color="#6EE7B7" size={16} />
+                        </Button>
+
+                        <Button variant="ghost" onClick={handleDetail} className="px-2">
+                          <BookOpenText color="#60A5FA" size={16} />
                         </Button>
 
                         <Button variant="ghost" onClick={handleDelete} className="px-2">
