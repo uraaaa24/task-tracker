@@ -138,9 +138,9 @@ const TodoListItem = (props: TodoListItemProps) => {
                         onChange={(e) => setEditingTitle(e.target.value)}
                       />
                     ) : (
-                      <label htmlFor={props.todo.id} className={`pl-1 ${field.value ? 'line-through text-gray-500' : ''} `}>
+                      <p className={`pl-1 cursor-default ${field.value ? 'line-through text-gray-500' : ''} `}>
                         {props.todo.title}
-                      </label>
+                      </p>
                     )}
                   </div>
 
