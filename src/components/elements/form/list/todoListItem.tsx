@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { useToast } from '@/components/ui/use-toast'
+import { useTodoDetail } from '@/contexts/todoDetail'
 import { useUpdateTodoComplete } from '@/hooks/useUpdateTodoComplete'
 import { TodoFormNames } from '@/schemas/todoStatusForm'
 import { TodoFormInferType, todoFormSchema } from '@/schemas/todoStatusForm/validation'
@@ -9,7 +10,7 @@ import { PutTodoStatusRequest, PutTodoTitleRequest, Todo } from '@/types/todo'
 import { deleteTodo } from '@/utils/requester/delete/todo'
 import { updateTodoTitle } from '@/utils/requester/put/todo'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Loader2, Pencil, Trash } from 'lucide-react'
+import { BookOpenText, Loader2, Pencil, Trash } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -21,6 +22,8 @@ type TodoListItemProps = {
 const TodoListItem = (props: TodoListItemProps) => {
   const router = useRouter()
   const formRef = useRef<HTMLFormElement>(null)
+
+  const {selectedTodo,setTodo}  = useTodoDetail()
 
   const [isEditing, setIsEditing] = useState(false)
   const [editingTitle, setEditingTitle] = useState(props.todo.title)
@@ -96,6 +99,14 @@ const TodoListItem = (props: TodoListItemProps) => {
     router.refresh()
   }
 
+  const handleDetail = (event: React.MouseEvent) => {
+    event.preventDefault()
+
+    setTodo(props.todo)
+  }
+
+  console.log(selectedTodo)
+
   useEffect(() => {
     /* Close the form when clicking outside */
     const handleClickOutside = (event: MouseEvent) => {
@@ -151,6 +162,10 @@ const TodoListItem = (props: TodoListItemProps) => {
                       </div>
                     ) : (
                       <>
+                        <Button variant="ghost" onClick={handleDetail} className="px-2">
+                          <BookOpenText color="#60A5FA" size={16} />
+                        </Button>
+
                         <Button variant="ghost" onClick={handleEdit} className="px-2">
                           <Pencil color="#6EE7B7" size={16} />
                         </Button>
